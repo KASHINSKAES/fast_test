@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="index.html">
+        <img src="img/arrow.png" alt="">
+    </a>
+    <div class="sns">
+        <h1>Приходи!</h1>
+        <div>
+            <input type="hidden" id="userId" />
+            <p>
+                Фамилия:<br/>
+                <input id="userFamilia" />
+            </p>
+            <p>
+                Имя:<br/>
+                <input id="userImia" />
+            </p>
+            <p>
+                Отчество:<br/>
+                <input id="userOtchestvo" />
+            </p>
+            <p>
+             Дата рождения:<br/>
+                <input id="userBirthDate" type="date"/>
+            </p>
+            <p>
+                <button id="saveBtn">Сохранить</button>
+            </p>
+        </div>
+    </div>
+   <script>
+    async function createUser(userFamilia, userImia,userOtchestvo,userBirthDate) {
+            const response = await fetch('http://127.0.0.1:8000/create_student', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json',
+                    'accept': 'application/json' ,
+                    'Access-Control-Allow-Origin': "*",
+                    'Access-Control-Allow-Headers': "*",
+                    'Access-Control-Allow-Methods': "POST" },
+
+                body: JSON.stringify({
+                    familia: userFamilia,
+                    imia: userImia,
+                    otchestvo: userOtchestvo,
+                    birthdate: userBirthDate
+                })
+            });
+            if (response.ok === true) {
+                await response.json();
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+       // сброс данных формы после отправки
+        function reset() {
+            document.getElementById("userId").value = 
+            document.getElementById("userFamilia").value =
+            document.getElementById("userImia").value =  
+            document.getElementById("userOtchestvo").value =
+            document.getElementById("userBirthDate").value = "";
+        }
+        // отправка формы
+        document.getElementById("saveBtn").addEventListener("click", async () => {
+             
+            const id = document.getElementById("userId").value;
+            const familia = document.getElementById("userFamilia").value;
+            const imia = document.getElementById("userImia").value;
+            const otchestvo = document.getElementById("userOtchestvo").value;
+            const birthdate = document.getElementById("userBirthDate").value;
+            if (id === "")
+                await createUser(familia, imia,otchestvo,birthdate);
+
+        });
+   </script>
+</body>
+</html>

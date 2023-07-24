@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="index.html">
+        <img src="img/arrow.png" alt="">
+    </a>
+        <div className="left_info"> 
+            <p>
+                Имя студента:<br/>
+                <input id="userImia"/>
+            </p>
+            <button id="saveBtn">Показать</button>
+                <table border="2">
+        <thead><tr><th>Фамилия</th><th>Имя</th><th>Отчество</th><th>Дата Рождения</th></tr></thead>
+        <tbody>
+        </tbody>
+    </table>
+            </div>
+        </div>
+<script>
+    async function getUser(imia) {
+            const response = await fetch(`http://127.0.0.1:8000/imia_get_${imia}`, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const users = await response.json();
+                const rows = document.querySelector("tbody");
+                users.forEach(user => rows.append(row(user)));
+            }
+        };
+        function row(user) {
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", user.id);
+  
+            const familiaTD = document.createElement("td");
+            familiaTD.append(user.familia);
+            tr.append(familiaTD);
+
+            const imiaTD = document.createElement("td");
+            imiaTD.append(user.imia);
+            tr.append(imiaTD);
+
+            const otchestvoTD = document.createElement("td");
+            otchestvoTD.append(user.otchestvo);
+            tr.append(otchestvoTD);
+
+            const birthdateTD = document.createElement("td");
+            birthdateTD.append(user.birthdate);
+            tr.append(birthdateTD);
+            
+  
+            const linksTd = document.createElement("td");
+            tr.appendChild(linksTd);
+  
+            return tr;
+        }
+        document.getElementById("saveBtn").addEventListener("click", async () => {
+                const Imia = document.getElementById("userImia").value; 
+                return getUser(Imia);
+        });
+   </script>
+</body>
+</html>
