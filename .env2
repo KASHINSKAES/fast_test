@@ -1,0 +1,7 @@
+DB_HOST=local
+DB_PORT=5433
+DB_NAME=postgreSS
+DB_USER=postgres
+DB_PASS=git remote add origin https://github.com/KASHINSKAES/Work-Fastapi-.git
+git branch -M main
+git push -u origin main
